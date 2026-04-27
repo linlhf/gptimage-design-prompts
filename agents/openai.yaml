@@ -1,0 +1,7 @@
+interface:
+  display_name: "GPT Image Design Prompts"
+  short_description: "Design prompts for GPT Image"
+  default_prompt: "Use $gptimage-design-prompts to create a GPT Image 2 prompt for my architecture, landscape, interior, or urban design image task."
+
+policy:
+  allow_implicit_invocation: true
