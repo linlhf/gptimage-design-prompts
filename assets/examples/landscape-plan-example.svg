@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-labelledby="title desc">
+  <title id="title">Landscape plan prompt example</title>
+  <desc id="desc">A conceptual before and after illustration showing a hand-drawn landscape plan converted into a clean colored presentation plan prompt.</desc>
+  <defs>
+    <style>
+      .bg{fill:#f7f5ef}
+      .panel{fill:#fffdf8;stroke:#2c2c2c;stroke-width:2}
+      .ink{fill:#252525;font-family:Inter,Arial,sans-serif}
+      .muted{fill:#666;font-family:Inter,Arial,sans-serif}
+      .line{stroke:#2c2c2c;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+      .sketch{stroke:#3b3b3b;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:7 7}
+      .path{fill:#e8d7bd;stroke:#2c2c2c;stroke-width:2}
+      .water{fill:#cfe7f4;stroke:#2c2c2c;stroke-width:2}
+      .lawn{fill:#d8f0e1;stroke:#2c2c2c;stroke-width:2}
+      .tree{fill:#9fcf9d;stroke:#2c2c2c;stroke-width:2}
+      .shrub{fill:#bfd9a8;stroke:#2c2c2c;stroke-width:1.5}
+    </style>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#2c2c2c"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="1200" height="640"/>
+  <text class="ink" x="60" y="62" font-size="34" font-weight="700">Example: hand sketch to colored landscape plan</text>
+  <text class="muted" x="60" y="98" font-size="18">The skill names what must stay fixed, then asks GPT Image 2 to clean, color, and professionalize the plan.</text>
+
+  <rect class="panel" x="70" y="145" width="450" height="380" rx="18"/>
+  <text class="ink" x="100" y="190" font-size="23" font-weight="700">Input: hand-drawn plan</text>
+  <path class="sketch" d="M140 410 C190 300 245 292 310 345 C365 390 410 335 455 250"/>
+  <path class="sketch" d="M145 245 C230 185 342 185 445 238"/>
+  <ellipse class="sketch" cx="260" cy="310" rx="72" ry="45"/>
+  <circle class="sketch" cx="170" cy="260" r="28"/>
+  <circle class="sketch" cx="218" cy="226" r="24"/>
+  <circle class="sketch" cx="396" cy="310" r="30"/>
+  <circle class="sketch" cx="430" cy="360" r="20"/>
+  <rect x="145" y="450" width="130" height="35" rx="6" fill="none" stroke="#3b3b3b" stroke-width="3" stroke-dasharray="8 5"/>
+  <text class="muted" x="110" y="500" font-size="15">messy linework, but layout matters</text>
+
+  <path class="line" marker-end="url(#arrow)" d="M545 335 H655"/>
+  <text class="ink" x="555" y="302" font-size="18" font-weight="700">Compiled prompt</text>
+  <text class="muted" x="555" y="368" font-size="15">preserve paths, trees,</text>
+  <text class="muted" x="555" y="390" font-size="15">water, planting zones</text>
+
+  <rect class="panel" x="680" y="145" width="450" height="380" rx="18"/>
+  <text class="ink" x="710" y="190" font-size="23" font-weight="700">Output target: presentation plan</text>
+  <path class="lawn" d="M755 420 C800 315 850 300 915 352 C970 395 1015 340 1065 248 L1062 468 L750 468 Z"/>
+  <path class="path" d="M735 250 C820 195 950 195 1072 240 L1052 275 C950 238 840 238 760 292 Z"/>
+  <ellipse class="water" cx="885" cy="325" rx="70" ry="44"/>
+  <circle class="tree" cx="785" cy="268" r="30"/>
+  <circle class="tree" cx="838" cy="235" r="26"/>
+  <circle class="tree" cx="1015" cy="315" r="32"/>
+  <circle class="tree" cx="1050" cy="365" r="22"/>
+  <circle class="shrub" cx="815" cy="410" r="14"/>
+  <circle class="shrub" cx="850" cy="430" r="12"/>
+  <circle class="shrub" cx="980" cy="410" r="15"/>
+  <rect class="path" x="770" y="450" width="135" height="36" rx="6"/>
+  <text class="muted" x="720" y="500" font-size="15">clean geometry, muted color, portfolio-ready</text>
+
+  <rect x="185" y="555" width="830" height="42" rx="12" fill="#d8f0e1" stroke="#2c2c2c" stroke-width="2"/>
+  <text class="ink" x="210" y="582" font-size="16">Prompt cue: preserve original layout exactly; improve linework; add top-view trees, paving textures, and soft professional colors.</text>
+</svg>

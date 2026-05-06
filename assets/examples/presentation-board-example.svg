@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">Presentation board prompt example</title>
+  <desc id="desc">A conceptual A1 presentation board layout showing title, concept, diagrams, plan, section, callouts, and a main rendering area.</desc>
+  <defs>
+    <style>
+      .bg{fill:#f7f5ef}
+      .board{fill:#fffdf8;stroke:#2c2c2c;stroke-width:2}
+      .box{fill:#ffffff;stroke:#2c2c2c;stroke-width:2}
+      .green{fill:#d8f0e1;stroke:#2c2c2c;stroke-width:2}
+      .warm{fill:#f6d9bd;stroke:#2c2c2c;stroke-width:2}
+      .cool{fill:#dce7f7;stroke:#2c2c2c;stroke-width:2}
+      .ink{fill:#252525;font-family:Inter,Arial,sans-serif}
+      .muted{fill:#666;font-family:Inter,Arial,sans-serif}
+      .line{stroke:#2c2c2c;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+    </style>
+  </defs>
+  <rect class="bg" width="1200" height="700"/>
+  <text class="ink" x="60" y="62" font-size="34" font-weight="700">Example: A1 presentation board prompt</text>
+  <text class="muted" x="60" y="98" font-size="18">For complex boards, the skill recommends staged generation: main view, diagrams, then final composition.</text>
+
+  <rect class="board" x="375" y="130" width="450" height="520" rx="10"/>
+  <rect class="cool" x="405" y="160" width="390" height="65" rx="8"/>
+  <text class="ink" x="430" y="198" font-size="22" font-weight="700">Project title + concept</text>
+
+  <rect class="box" x="405" y="245" width="175" height="125" rx="8"/>
+  <text class="muted" x="430" y="276" font-size="15">masterplan</text>
+  <path class="line" d="M430 340 C470 295 510 300 555 260"/>
+  <circle class="green" cx="455" cy="305" r="18"/>
+  <circle class="green" cx="515" cy="330" r="16"/>
+
+  <rect class="box" x="620" y="245" width="175" height="125" rx="8"/>
+  <text class="muted" x="645" y="276" font-size="15">strategy diagrams</text>
+  <circle class="warm" cx="665" cy="322" r="22"/>
+  <circle class="green" cx="725" cy="322" r="22"/>
+  <path class="line" d="M687 322 H703"/>
+
+  <rect class="box" x="405" y="395" width="175" height="95" rx="8"/>
+  <text class="muted" x="430" y="428" font-size="15">section / detail</text>
+  <path class="line" d="M430 465 H555 M445 465 C470 430 515 430 540 465"/>
+
+  <rect class="box" x="620" y="395" width="175" height="95" rx="8"/>
+  <text class="muted" x="645" y="428" font-size="15">callouts</text>
+  <path class="line" d="M650 462 L690 440 L750 462"/>
+  <circle cx="690" cy="440" r="7" fill="#2c2c2c"/>
+
+  <rect class="warm" x="405" y="515" width="390" height="105" rx="8"/>
+  <text class="ink" x="430" y="575" font-size="20" font-weight="700">main rendering anchor</text>
+  <path class="line" d="M675 600 C710 555 750 555 780 600"/>
+
+  <text class="ink" x="90" y="210" font-size="20" font-weight="700">Prompt should specify</text>
+  <text class="muted" x="90" y="248" font-size="16">visual hierarchy</text>
+  <text class="muted" x="90" y="276" font-size="16">required panels</text>
+  <text class="muted" x="90" y="304" font-size="16">diagram style</text>
+  <text class="muted" x="90" y="332" font-size="16">text limits</text>
+  <text class="muted" x="90" y="360" font-size="16">final use case</text>
+
+  <text class="ink" x="895" y="210" font-size="20" font-weight="700">Better in stages</text>
+  <text class="muted" x="895" y="248" font-size="16">1. main rendering</text>
+  <text class="muted" x="895" y="276" font-size="16">2. analysis diagrams</text>
+  <text class="muted" x="895" y="304" font-size="16">3. section/details</text>
+  <text class="muted" x="895" y="332" font-size="16">4. board composition</text>
+  <text class="muted" x="895" y="360" font-size="16">5. manual text cleanup</text>
+</svg>

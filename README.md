@@ -4,6 +4,10 @@
 
 这个 skill 的默认定位很简单：**Codex 负责写 prompt，ChatGPT 负责生图**。你可以把草图、平面图、SU 模型截图、现场照片、材质参考、情绪板或展板需求交给 Codex，它会输出英文主 prompt、中文意图说明、ChatGPT 使用步骤，以及可选的 API 参数建议。
 
+![GPT Image Design Prompts workflow overview](assets/examples/workflow-overview.svg)
+
+> 示例配图是概念示意图，用来解释工作流和 prompt 结构，不代表某一次模型生成结果。
+
 ## 适合谁使用
 
 - 建筑、景观、城市设计、室内设计学生
@@ -164,6 +168,8 @@ Use $gptimage-design-prompts
 
 ### 手绘景观平面转彩色总平面
 
+![Hand-drawn landscape plan to colored presentation plan](assets/examples/landscape-plan-example.svg)
+
 ```text
 Use $gptimage-design-prompts 帮我把手绘景观平面图转成 GPT Image 2 prompt。
 目标是干净的彩色景观总平面，必须保留原始布局、路径、铺装边界、树木和灌木位置。
@@ -180,6 +186,8 @@ Use $gptimage-design-prompts 给这张 SketchUp 模型截图写一个 GPT Image 
 
 ### 旧建筑照片改造成咖啡馆
 
+![Material reference transfer prompt example](assets/examples/retexture-example.svg)
+
 ```text
 Use $gptimage-design-prompts 帮我写照片改造 prompt。
 输入是一张街角旧建筑照片，目标是改造成现代街角咖啡馆。
@@ -195,6 +203,8 @@ Use $gptimage-design-prompts 把这张景观平面图转成 60 度等轴测 prom
 ```
 
 ### 城市设计图板
+
+![A1 presentation board prompt anatomy](assets/examples/presentation-board-example.svg)
 
 ```text
 Use $gptimage-design-prompts 帮我拆一个城市设计 A1 展板 prompt。
@@ -238,6 +248,8 @@ gptimage-design-prompts/
 ├── SKILL.md
 ├── agents/
 │   └── openai.yaml
+├── assets/
+│   └── examples/
 ├── references/
 │   ├── gpt-image-2-api.md
 │   └── prompt-patterns.md
@@ -246,6 +258,7 @@ gptimage-design-prompts/
 ```
 
 - `SKILL.md`：核心工作流和输出格式
+- `assets/examples/`：README 示例配图
 - `references/prompt-patterns.md`：设计场景 prompt 模板库
 - `references/gpt-image-2-api.md`：API 模式说明
 - `scripts/generate_gpt_image.py`：可选 API 生图脚本
