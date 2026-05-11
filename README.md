@@ -2,7 +2,7 @@
 
 一个面向建筑、景观、室内、城市设计的 Codex skill，用来把设计需求编译成适合 GPT Image 2 / ChatGPT Images 的高质量生图提示词。
 
-这个 skill 的默认定位很简单：**Codex 负责写 prompt，ChatGPT 负责生图**。你可以把草图、平面图、SU 模型截图、现场照片、材质参考、情绪板或展板需求交给 Codex，它会输出英文主 prompt、中文意图说明、ChatGPT 使用步骤，以及可选的 API 参数建议。
+这个 skill 的默认定位很简单：**Codex 负责写 prompt，ChatGPT 负责生图**。你也可以显式切到 Codex 订阅模式，让已经登录的 Codex CLI 直接生图并把图片保存到本地。API 模式仍然保留给以后有 `OPENAI_API_KEY` 的情况。
 
 ![GPT Image Design Prompts workflow overview](assets/examples/workflow-overview.svg)
 
@@ -31,7 +31,7 @@
 
 ## 工作方式
 
-这个 skill 有三种使用模式。
+这个 skill 有四种使用模式。
 
 ### 1. ChatGPT 复制粘贴模式，默认推荐
 
@@ -97,7 +97,37 @@ Use $gptimage-design-prompts 帮我写一个 Photoshop handoff prompt。
 目标是改造成现代街角咖啡馆，结果要方便我放回 PS 做图层合成。
 ```
 
-### 3. API 模式，可选预留
+### 3. Codex 订阅直出模式，无 API key
+
+如果你的 Codex CLI 已经登录，并且本地支持 `image_generation`，可以让 Codex 直接生成图片。这个模式不读取 `OPENAI_API_KEY`，适合当前只有 ChatGPT Plus / Pro / 已登录 Codex 环境、但还没有 API key 的情况。
+
+先确认 CLI 可用：
+
+```bash
+codex --version
+```
+
+生成图片：
+
+```bash
+python scripts/generate_via_codex.py \
+  --prompt "Create a photorealistic architectural visualization of a small concrete garden pavilion, landscape 3:2 composition, soft natural daylight, no text." \
+  --output-dir ./outputs
+```
+
+带参考图编辑：
+
+```bash
+python scripts/generate_via_codex.py \
+  --image ./base-scene.png \
+  --image ./material-reference.png \
+  --prompt "Use the first image as the base scene. Use the second image only as the facade material reference. Preserve camera angle, massing, shadows, and surrounding context." \
+  --output-dir ./outputs
+```
+
+生成后脚本会把图片复制到 `outputs/`，在 Codex Desktop 里也可以用本地绝对路径显示图片。这个模式依赖你的 Codex 登录状态和本地功能开关，不等同于 Images API，也不能保证暴露所有 API 参数。
+
+### 4. API 模式，可选预留
 
 如果你有 OpenAI API key，可以显式要求 Codex 走 API 模式。普通使用不需要 API key。
 
@@ -251,17 +281,21 @@ gptimage-design-prompts/
 ├── assets/
 │   └── examples/
 ├── references/
+│   ├── codex-subscription-mode.md
 │   ├── gpt-image-2-api.md
 │   └── prompt-patterns.md
 └── scripts/
-    └── generate_gpt_image.py
+    ├── generate_gpt_image.py
+    └── generate_via_codex.py
 ```
 
 - `SKILL.md`：核心工作流和输出格式
 - `assets/examples/`：README 示例配图
 - `references/prompt-patterns.md`：设计场景 prompt 模板库
+- `references/codex-subscription-mode.md`：Codex CLI 订阅直出模式说明
 - `references/gpt-image-2-api.md`：API 模式说明
 - `scripts/generate_gpt_image.py`：可选 API 生图脚本
+- `scripts/generate_via_codex.py`：无 API key 的 Codex CLI 直出脚本
 - `agents/openai.yaml`：Codex skill 元数据
 
 ## 使用限制
@@ -269,6 +303,7 @@ gptimage-design-prompts/
 - 精确文字、密集标注、完整 A1 展板排版可能需要多轮修正。
 - 严格比例、CAD 精度和施工图级准确性不能完全依赖生图模型。
 - 复杂工作流建议拆成多步：先主渲染，再分析图，再展板组合。
+- Codex 订阅直出模式依赖本机 Codex CLI 登录状态和 `image_generation` 可用性。
 - API 模式需要 OpenAI API key、模型权限和可用额度。
 - ChatGPT Desktop 不能直接读取本地 Codex skill；默认做法仍然是 Codex 生成 prompt，再复制到 ChatGPT。
 

@@ -1,6 +1,6 @@
 ---
 name: gptimage-design-prompts
-description: Generate GPT Image 2 and ChatGPT Images prompts for architecture, landscape, interior, and urban design image generation or editing from sketches, plans, photos, models, moodboards, material references, diagrams, and presentation-board needs. Use this skill when the user wants professional design visualization prompts, image-editing instructions, or optional API-ready settings for gpt-image-2.
+description: Generate GPT Image 2 and ChatGPT Images prompts for architecture, landscape, interior, and urban design image generation or editing from sketches, plans, photos, models, moodboards, material references, diagrams, and presentation-board needs. Use this skill when the user wants professional design visualization prompts, image-editing instructions, optional API-ready settings for gpt-image-2, or direct local image generation through logged-in Codex CLI subscription mode.
 metadata:
   short-description: GPT Image prompts for design visualization
 ---
@@ -10,6 +10,8 @@ metadata:
 ## Overview
 
 Use this skill to compile design visualization requests into GPT Image 2 prompts. The default workflow is copy-paste mode: produce an English prompt for ChatGPT Images, plus a concise Chinese explanation and optional API settings.
+
+When the user explicitly asks Codex to generate images directly and they do not have an API key, use Codex subscription mode with `scripts/generate_via_codex.py`.
 
 Do not recreate or quote long source prompt books. Extract the user's intent, choose the closest design workflow, and rewrite it as a model-ready prompt for GPT Image 2.
 
@@ -56,6 +58,8 @@ Default to an English main prompt. Use Chinese for explanation, user-facing note
 ## Mode Rules
 
 **Copy-paste mode is the default.** Produce a prompt that the user can paste into ChatGPT Desktop App with uploaded reference images. Describe image order when useful: "Upload the base image first, then the material reference."
+
+**Codex subscription mode is explicit.** Use this when the user asks to generate an image directly in Codex through their logged-in subscription, Plus/Pro account, or no-API-key workflow. Read `references/codex-subscription-mode.md`, then run `scripts/generate_via_codex.py`. After generation, show saved image paths and, in Codex Desktop, render the image with an absolute Markdown image path.
 
 **API mode is explicit.** Only use API mode when the user says to directly generate an image, call the API, or save a generated image locally. Read `references/gpt-image-2-api.md` before giving API instructions or running `scripts/generate_gpt_image.py`.
 
