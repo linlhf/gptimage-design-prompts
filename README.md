@@ -31,7 +31,7 @@
 
 ## 工作方式
 
-这个 skill 有四种使用模式。
+这个 skill 有三种使用模式。
 
 ### 1. ChatGPT 复制粘贴模式，默认推荐
 
@@ -70,34 +70,7 @@ size: 1536x1024
 quality: high
 ```
 
-### 2. Photoshop Handoff 模式，手动联动
-
-这个 skill 不能直接控制 Photoshop，也不会自动把 ChatGPT 生成结果塞回 PSD。它更适合作为 Photoshop 前后的 prompt 编译器。
-
-推荐流程：
-
-1. 在 Photoshop 中导出当前画面、局部截图、草图、平面图或材质参考。
-2. 在 Codex 中用这个 skill 生成 GPT Image 2 prompt。
-3. 把参考图和 prompt 放进 ChatGPT 生图或改图。
-4. 把生成结果拖回 Photoshop。
-5. 用图层、蒙版、曲线、色彩平衡、透视变换继续合成。
-
-适合场景：
-
-- 保留原图构图，改建筑立面材质
-- 给景观平面局部增加材质或植物氛围
-- 生成一张新的主视觉后回到 PS 做展板
-- 先在 ChatGPT 生成方案氛围，再在 PS 里做精修
-
-你可以这样问：
-
-```text
-Use $gptimage-design-prompts 帮我写一个 Photoshop handoff prompt。
-我会从 PS 导出一张街角旧建筑照片，还会导出一张玻璃砖材质参考图。
-目标是改造成现代街角咖啡馆，结果要方便我放回 PS 做图层合成。
-```
-
-### 3. Codex 订阅直出模式，无 API key
+### 2. Codex 订阅直出模式，无 API key
 
 如果你的 Codex CLI 已经登录，并且本地支持 `image_generation`，可以让 Codex 直接生成图片。这个模式不读取 `OPENAI_API_KEY`，适合当前只有 ChatGPT Plus / Pro / 已登录 Codex 环境、但还没有 API key 的情况。
 
@@ -127,7 +100,7 @@ python scripts/generate_via_codex.py \
 
 生成后脚本会把图片复制到 `outputs/`，在 Codex Desktop 里也可以用本地绝对路径显示图片。这个模式依赖你的 Codex 登录状态和本地功能开关，不等同于 Images API，也不能保证暴露所有 API 参数。
 
-### 4. API 模式，可选预留
+### 3. API 模式，可选预留
 
 如果你有 OpenAI API key，可以显式要求 Codex 走 API 模式。普通使用不需要 API key。
 
@@ -191,7 +164,7 @@ Use $gptimage-design-prompts
 必须保留：布局、比例、视角、树木位置、建筑体量、路径关系等
 允许修改：材质、植物、家具、灯光、氛围、标注方式等
 目标风格：MIR 渲染、竞赛图板、CAD 线稿、粉彩图解、真实感、极简室内等
-输出用途：作品集、竞赛、客户沟通、课堂汇报、PS 后期合成
+输出用途：作品集、竞赛、客户沟通、课堂汇报
 ```
 
 ## 常用示例
