@@ -19,7 +19,7 @@ Do not recreate or quote long source prompt books. Extract the user's intent, ch
 
 Return this structure unless the user asks for a different format:
 
-```markdown
+```
 ## GPT Image 2 Prompt
 [English prompt ready to paste into ChatGPT]
 
