@@ -42,6 +42,23 @@ Default to an English main prompt. Use Chinese for explanation, user-facing note
 
 Identify inputs and task, then **immediately load the matching template from `references/prompt-patterns.md` before writing any prompt**. Never write from general knowledge alone — always anchor the output to a template, even when the task feels familiar.
 
+### Pre-Step — Check user input completeness
+
+Before classifying inputs and tasks, check whether the user's request contains enough signal to pick a row from the mapping table in Step 3. The minimum required signals are:
+
+1. **Input type** — what reference material the user is providing (sketch / plan / model / photo / moodboard / multiple images / nothing)
+2. **Target output** — what they want produced (rendering / colored plan / axonometric / renovation / board / etc.)
+
+If either signal is missing or ambiguous, **ask one short clarifying question first** instead of guessing. Examples:
+
+- User says "帮我做个图" with no image and no target → ask: "你想要什么类型的图？是建筑渲染、平面图、轴测图，还是分析图？有没有参考图可以上传？"
+- User uploads an image but says only "帮我改改" → ask: "想往哪个方向改？比如换成现代风格、加植物、改成竞赛图板、还是转成另一个视角？"
+- User uploads 2+ images without explaining their roles → ask: "第一张和第二张图分别是干什么用的？比如哪张是参考材质、哪张是要修改的场景？"
+
+Optional signals (preserve list, style direction, final use case) — fill in sensible defaults from the matched template's `Preserve list` and `Recommended keywords` if the user didn't specify. **Do not** invent the input type or target if they're unclear — those two signals are required to pick the correct template.
+
+Only after both required signals are present, proceed to Step 1.
+
 ### Step 1 — Classify the input
 
 What did the user provide?
