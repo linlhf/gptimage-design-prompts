@@ -40,20 +40,101 @@ Default to an English main prompt. Use Chinese for explanation, user-facing note
 
 ## Workflow Decision
 
-1. Identify the input type: no image, sketch, floor plan, site plan, photo, SketchUp/model screenshot, rendering, moodboard, material reference, diagram, or board layout.
-2. Identify the task: generate, edit, retexture, transform view, diagram, technical drawing, moodboard, presentation board, or multi-step workflow.
-3. If reference images are involved, specify their roles clearly: base image, style reference, material reference, plant list, layout reference, or previous output.
-4. Compile the prompt with this skeleton:
-   - task and output type
-   - input-image constraints
-   - elements to preserve
-   - design changes to apply
-   - style, material, planting, furniture, and context details
-   - camera, projection, composition, and aspect ratio
-   - lighting, atmosphere, rendering or diagram style
-   - final use case
-   - what not to change
-5. Recommend ChatGPT usage first. Mention API execution only when the user explicitly asks to generate files through API.
+Identify inputs and task, then **immediately load the matching template from `references/prompt-patterns.md` before writing any prompt**. Never write from general knowledge alone — always anchor the output to a template, even when the task feels familiar.
+
+### Step 1 — Classify the input
+
+What did the user provide?
+
+- no image (text-only request)
+- hand-drawn sketch
+- floor plan / site plan (top-down line drawing)
+- SketchUp / Rhino / white-model screenshot
+- existing rendering
+- site / building / street photo
+- moodboard or material reference (one image)
+- multiple reference images (moodboard + site, materials + plan, etc.)
+- existing diagram (axonometric, analysis, etc.)
+- board layout / presentation board draft
+
+### Step 2 — Classify the task
+
+What does the user want?
+
+- generate a new image from scratch
+- render a sketch or model
+- transform view (plan → axon, plan → bird's-eye, 3D → plan, etc.)
+- retexture / change materials / change facade
+- photo renovation (modernize, transform, restyle)
+- apply moodboard to a scene
+- floor plan to interior rendering
+- produce an analysis diagram (massing, circulation, zoning, timeline)
+- produce a presentation board (A1, competition, portfolio)
+- multi-step workflow (architecture / landscape / urban design)
+
+### Step 3 — Look up the matching template
+
+Use this mapping to find the right section in `references/prompt-patterns.md`. Load that section before writing the prompt.
+
+| Input | Task | Section in prompt-patterns.md |
+|-------|------|-------------------------------|
+| sketch | → rendering | `# sketch-to-render` |
+| SU/Rhino/white model | → rendering | `# model-to-render` |
+| floor plan / site plan | → colored presentation plan | `# plan-to-colored-plan` |
+| floor plan / site plan | → axonometric / isometric | `# plan-to-axonometric` |
+| floor plan / site plan | → bird's-eye perspective | `# plan-to-birdseye` |
+| 3D rendering / model | → plan / elevation / section | `# 3d-to-2d` |
+| photo of building / street | → renovation / restyle | `# photo-renovation` |
+| photo + material reference | → retexture | `# retexture` |
+| moodboard + base scene | → apply moodboard to scene | `# moodboard-to-image` |
+| any scene | → moodboard / material board | `# scene-to-moodboard` |
+| interior floor plan | → interior rendering | `# floorplan-to-interior` |
+| any input | → analysis diagram | `# analysis-diagram` |
+| any input | → CAD-like technical line drawing | `# cad-linework` |
+| any input | → timeline / site evolution | `# timeline-analysis` |
+| any input | → presentation board (A1, competition) | `# presentation-board` |
+| project brief | → architecture multi-step workflow | `# workflow-architecture` |
+| project brief | → landscape multi-step workflow | `# workflow-landscape` |
+| project brief | → urban design multi-step workflow | `# workflow-urban` |
+
+If two rows could match, pick the one closer to the user's final output. If nothing matches, pick the closest row, load it, and adapt — never skip the lookup.
+
+### Step 4 — Compile the prompt with the template's skeleton
+
+Each template in `prompt-patterns.md` provides:
+- a tested skeleton
+- preserve-list defaults
+- common failure modes for that scenario
+- recommended keywords for lighting, materials, style
+
+Fill in the user's specifics on top of the skeleton. Do not invent the structure from scratch.
+
+### Step 5 — Recommend ChatGPT usage first
+
+Mention API execution only when the user explicitly asks to generate files through API or Codex subscription mode.
+
+## Multi-Image Role Declaration
+
+When the user provides 2+ reference images, every prompt must start with explicit role labels for each image. This is the single biggest cause of bad output in moodboard, material-transfer, and retexture tasks — the model mixes up which image is the source of geometry and which is the source of materials.
+
+### Required format
+
+Open the prompt with role-tagged image references, for example:
+
+- "Image 1 (the moodboard): use only for material palette, plant species, and texture selection. Do not copy its layout or composition."
+- "Image 2 (the base site photo): preserve its geometry, camera angle, layout, and surroundings. Apply elements from Image 1 onto this scene."
+
+### Rules
+
+- Never write "the first image" or "the second image" alone — always include the semantic role in parentheses immediately after.
+- For every image, state in one short clause what to **take from it** and what to **ignore from it**.
+- If image order in ChatGPT upload matters, also tell the user the upload order in the `## ChatGPT 使用方式` section.
+- Common roles to label clearly: base scene, base plan, base model, style reference, material reference, plant reference, moodboard, previous output, layout reference, color palette reference.
+
+### Example
+
+> Image 1 (the plant moodboard): use only as a reference for plant species, leaf textures, and color palette. Do not change the site geometry based on this image.
+> Image 2 (the backyard site photo): preserve the lawn boundary, paving edges, building wall, and camera angle. Integrate the plants from Image 1 along the lawn edges and near the paving.
 
 ## Mode Rules
 
@@ -85,19 +166,11 @@ Use `medium` for exploration and `high` for final presentation images.
 
 ## Prompt Pattern Reference
 
-Load `references/prompt-patterns.md` when the task involves a specific design scenario or workflow. It contains compact templates for:
+`references/prompt-patterns.md` is the template library. The Workflow Decision step **must** load the matching H1 section from this file before writing any prompt.
 
-- sketch/model to rendering
-- photo renovation
-- retexture and material transfer
-- plan to bird's-eye or perspective
-- floor plan to interior rendering
-- axonometric and isometric diagrams
-- CAD-like technical linework
-- moodboards and material boards
-- timeline and site analysis diagrams
-- architecture, landscape, and urban design workflows
-- A1 presentation-board prompts
+Loading rule: do not read the whole file. Open it and jump directly to the H1 anchor from the Workflow Decision table (e.g. `# sketch-to-render`, `# moodboard-to-image`).
+
+If the matching section is a placeholder (no skeleton filled in yet), use its `Preserve list` and `Recommended keywords` as scaffolding and compose the rest from the user's specifics.
 
 ## Quality Rules
 
@@ -106,3 +179,6 @@ Load `references/prompt-patterns.md` when the task involves a specific design sc
 - Use design-domain vocabulary: photorealistic architectural visualization, MIR-style rendering, clean axonometric diagram, CAD-like black linework, competition board, restrained pastel diagram, soft natural daylight.
 - Avoid overloading a single prompt with rendering, analysis, labels, and board layout at once. Break complex outputs into rounds.
 - Warn that precise text, dense labels, strict plan accuracy, and full presentation-board typography may need iteration.
+- When the input is a plan or sketch and the task is rendering, always state explicitly that the model must preserve plan geometry, scale, and tree/element positions — these are the most commonly lost details.
+- When the task involves moodboards or material transfer, state explicitly which image contributes materials and which contributes geometry, using the Multi-Image Role Declaration format.
+- When the user asks for an A1 board, competition panel, or analysis diagram with labels, warn that text rendering and dense typography may need a second editing round, and suggest generating the visuals first and the labels separately.
