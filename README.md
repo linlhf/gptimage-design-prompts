@@ -33,6 +33,23 @@
 
 这个 skill 有三种使用模式。
 
+### 核心机制：先匹配模板，再写 Prompt
+
+这个 skill 现在不是直接凭通用经验写 prompt，而是先判断你的输入和任务，再跳转到 `references/prompt-patterns.md` 里的对应模板。
+
+例如：
+
+- 草图转渲染：使用 `# sketch-to-render`
+- SU / Rhino / 白模截图转渲染：使用 `# model-to-render`
+- 平面图转彩色总平面：使用 `# plan-to-colored-plan`
+- 平面图转 60 度轴测：使用 `# plan-to-axonometric`
+- 场地照片改造：使用 `# photo-renovation`
+- 照片 + 材质参考重贴图：使用 `# retexture`
+- 情绪板 + 场地照片：使用 `# moodboard-to-image`
+- A1 / 竞赛展板：使用 `# presentation-board`
+
+这样做的目的，是让 Codex 每次先套用对应场景的“配方”，再把你的具体项目填进去，减少模型不理解场景、混淆输入图、或者随手写泛泛 prompt 的情况。
+
 ### 1. ChatGPT 复制粘贴模式，默认推荐
 
 这是最常用、也最稳的方式。
@@ -94,7 +111,7 @@ python scripts/generate_via_codex.py \
 python scripts/generate_via_codex.py \
   --image ./base-scene.png \
   --image ./material-reference.png \
-  --prompt "Use the first image as the base scene. Use the second image only as the facade material reference. Preserve camera angle, massing, shadows, and surrounding context." \
+  --prompt "Image 1 (the base scene): preserve camera angle, massing, shadows, and surrounding context. Image 2 (the facade material reference): use only as the facade material source, not as a layout reference. Apply the material from Image 2 to the target facade in Image 1." \
   --output-dir ./outputs
 ```
 
@@ -133,7 +150,7 @@ python scripts/generate_gpt_image.py \
   --mode edit \
   --input-image ./base-scene.png \
   --input-image ./material-reference.png \
-  --prompt "Replace the plaza paving with the material from the second image..." \
+  --prompt "Image 1 (the base scene): preserve the plaza geometry, perspective, lighting, shadows, and surrounding context. Image 2 (the paving material reference): use only as the paving texture and color source. Replace the target paving in Image 1 with the material from Image 2." \
   --size 1536x1024 \
   --quality high \
   --output-dir ./outputs
@@ -167,6 +184,39 @@ Use $gptimage-design-prompts
 输出用途：作品集、竞赛、客户沟通、课堂汇报
 ```
 
+### 多图任务写法
+
+如果你有 2 张或更多参考图，最重要的是先说明每张图的角色。不要只说“第一张图、第二张图”，要写成“图片编号 + 语义角色”。
+
+推荐格式：
+
+```text
+Use $gptimage-design-prompts
+
+Image 1：植物情绪板，只参考植物种类、叶片质感、色彩和氛围，不参考构图。
+Image 2：后院现场照片，必须保留草坪边界、铺装边缘、建筑墙面、相机角度和空间尺度。
+
+任务目标：把 Image 1 的植物和氛围应用到 Image 2 的后院场景中，生成真实感景观改造图。
+必须保留：Image 2 的场地几何、视角、建筑位置和铺装边界。
+允许修改：植物配置、花境层次、局部家具、灯光氛围。
+输出用途：作品集改造效果图。
+```
+
+skill 输出的英文 prompt 会以类似下面的角色声明开头：
+
+```text
+Image 1 (the plant moodboard): use only as a reference for plant species, leaf textures, and color palette. Do not change the site geometry based on this image.
+Image 2 (the backyard site photo): preserve the lawn boundary, paving edges, building wall, and camera angle. Integrate the plants from Image 1 along the lawn edges and near the paving.
+```
+
+适合多图角色声明的任务：
+
+- 情绪板 + 场地照片
+- 材质参考 + 建筑照片
+- 植物板 + 景观平面
+- 上一轮生成图 + 新风格参考
+- 总平面 + SU 模型截图 + 展板布局参考
+
 ## 常用示例
 
 ### 手绘景观平面转彩色总平面
@@ -195,6 +245,28 @@ Use $gptimage-design-prompts 给这张 SketchUp 模型截图写一个 GPT Image 
 Use $gptimage-design-prompts 帮我写照片改造 prompt。
 输入是一张街角旧建筑照片，目标是改造成现代街角咖啡馆。
 保留原始体量、街角位置和相机视角，更新立面为玻璃砖、极简招牌、转角窗和户外座位。
+```
+
+### 情绪板应用到场地照片
+
+```text
+Use $gptimage-design-prompts 帮我写一个 moodboard-to-image prompt。
+
+Image 1：现代自然主义庭院情绪板，只参考植物层次、材质、色彩和灯光氛围。
+Image 2：现状后院照片，必须保留建筑墙面、草坪边界、铺装边缘、相机角度和空间尺度。
+
+目标是在 Image 2 的后院里应用 Image 1 的植物和材料氛围，生成真实、克制、适合作品集的庭院改造效果图。
+```
+
+### 材质参考重贴建筑立面
+
+```text
+Use $gptimage-design-prompts 帮我写一个 retexture prompt。
+
+Image 1：街角建筑照片，作为基础场景，保留透视、体量、窗洞、街道环境、光影和尺度。
+Image 2：玻璃砖材质参考，只参考材料质感、透明度、颜色和拼缝，不参考构图。
+
+目标是把 Image 2 的玻璃砖材质应用到 Image 1 的首层转角立面，结果要像真实施工完成，而不是贴图覆盖。
 ```
 
 ### 平面图转 60 度轴测图
@@ -264,7 +336,7 @@ gptimage-design-prompts/
 
 - `SKILL.md`：核心工作流和输出格式
 - `assets/examples/`：README 示例配图
-- `references/prompt-patterns.md`：设计场景 prompt 模板库
+- `references/prompt-patterns.md`：设计场景 prompt 模板库，包含 `# sketch-to-render`、`# retexture`、`# moodboard-to-image` 等 H1 模板
 - `references/codex-subscription-mode.md`：Codex CLI 订阅直出模式说明
 - `references/gpt-image-2-api.md`：API 模式说明
 - `scripts/generate_gpt_image.py`：可选 API 生图脚本
